@@ -234,6 +234,7 @@ public class SignInActivity extends AppCompatActivity {
                         editor.putString("password",password);
                         editor.putString("profilePictureURL","");
                         editor.putString("username",username);
+                        editor.putBoolean("isNew", false);
                         editor.apply();
 
                         goToHome();
