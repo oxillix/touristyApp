@@ -3,6 +3,7 @@ package com.broeders.touristy;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,19 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-//JSON
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +34,10 @@ public class LogInActivity extends AppCompatActivity {
     // Variables Declarations
     String email, password;
     //
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    //  Importing shared preferences
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -83,6 +74,9 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
         // End UI Initialization
+        pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
+        //initialising shared preferences
     }
 
     @Override
@@ -144,13 +138,21 @@ public class LogInActivity extends AppCompatActivity {
             StringRequest loginRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.contains("true")) {
-                        txtError.setTextColor(getResources().getColor(R.color.colorSucces));
-                        txtError.setText("Propere jongen, dit is een valide account!!!!");
+                    if (response.contains("true") || response.contains("True")) {
+                        String userID = response.substring(response.indexOf(",") + 1, response.indexOf(";"));
+
+                        //initialising user
+                        getUser(userID);
+                        //end requesting user
+
+                        editor.putBoolean("isNew", false);
+                        editor.putString("userID",userID);
+                        editor.apply();
                     } else {
                         txtError.setText(R.string.wrongCreds);
                     }
                     progressDialog.dismiss();
+                    goToHome();
                 }
             }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override
@@ -159,10 +161,58 @@ public class LogInActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             });
-
             loginRequestQueue.add(loginRequest);
         }
     }
+
+    public void getUser(String userID) {
+        RequestQueue userRequestQueue = Volley.newRequestQueue(this);
+
+
+        String userURL = "http://ineke.broeders.be/touristy/webservice.aspx?do=getUser&userID=" + userID;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, userURL, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String Email = response.getString("Email");
+                            String Country = response.getString("Country");
+                            String BirthDate = response.getString("BirthDate");
+                            String DateCreated = response.getString("DateCreated");
+                            String FirstName = response.getString("FirstName");
+                            String LastName = response.getString("LastName");
+                            String Password = response.getString("Password");
+                            String ProfilePictureURL = response.getString("ProfilePictureURL");
+                            String Username = response.getString("Username");
+
+                            editor.putString("email",Email);
+                            editor.putString("country",Country);
+                            editor.putString("birthDate",BirthDate);
+                            editor.putString("dateCreated",DateCreated);
+                            editor.putString("firstName",FirstName);
+                            editor.putString("lastName",LastName);
+                            editor.putString("password",Password);
+                            editor.putString("profilePictureURL",ProfilePictureURL);
+                            editor.putString("username",Username);
+                            editor.apply();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        txtError.setText(R.string.logInError);
+                        progressDialog.dismiss();
+                    }
+                });
+        userRequestQueue.add(jsonObjectRequest);
+    }
+
     //Deze 2 methodes worden gebruikt om naar HomeActivity of SignInActivity te gaan.
     public void goToHome() {
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);

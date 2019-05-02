@@ -24,8 +24,8 @@
     <string name="Creating_Account">Creating Account</string>
     <string name="Name">Enter your name</string>
     <string name="Password_length">Password must contain at least 6 characters</string>
-    <string name="signin_Successful"> User Registered Successfully </string>
-    <string name="signin_Error"> There was a problem registering user </string>
+    <string name="signin_Successful"> User Registered Successfully</string>
+    <string name="signin_Error">A problem occurred when registering the user.</string>
     <string-array name="countriesList">
         <item>Belgium</item>
         <item>The Netherlands</item>

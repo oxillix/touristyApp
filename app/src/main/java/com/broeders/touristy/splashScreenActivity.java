@@ -30,8 +30,6 @@ public class splashScreenActivity extends AppCompatActivity {
             startActivity(home);
             finish();
         } else {
-            //Hiding status bar
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             //Hiding action bar
             getSupportActionBar().hide();
 

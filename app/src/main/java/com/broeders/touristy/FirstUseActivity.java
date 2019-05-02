@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class FirstUseActivity extends AppCompatActivity {
@@ -14,6 +15,13 @@ public class FirstUseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_use);
+
+        //animations
+        //Hiding status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Hiding action bar
+        getSupportActionBar().hide();
+        //animations end
 
         Button loginButton = findViewById(R.id.loginButton);
         pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);

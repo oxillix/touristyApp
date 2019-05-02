@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,10 +19,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,6 +47,11 @@ public class SignInActivity extends AppCompatActivity {
     DatePickerDialog datePicker;
     ProgressDialog progressDialog;
     // Variables Declarations
+    //sharedPreferences init
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    //end sharedPreferences init
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -108,6 +118,10 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         // End UI Initialization
+        //sharedPref init
+        pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
+        //end sharedPref init
     }
 
     public void displayProgressDialog(int title, int message){
@@ -124,11 +138,17 @@ public class SignInActivity extends AppCompatActivity {
         finish();
     }
 
+    public void goToHome() {
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+        finish();
+    }
+
     public void signIn(){
         displayProgressDialog(R.string.Creating_Account, R.string.Please_Wait);
         setUserValues();
         if (verifyData()){
-            authRegister();
+            registerUser();
         }
     }
 
@@ -187,28 +207,7 @@ public class SignInActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void authRegister(){
-        /*
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            registerUser();
-                            sendEmailVerification();
-                        }
-                        else {
-                            progressDialog.dismiss();
-                            Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-        */
-    }
-
-
     protected void registerUser(){
-        /*
         txtError.setTextColor(getResources().getColor(R.color.colorError));
 
         if (isNetworkAvailable() == false) {
@@ -217,13 +216,27 @@ public class SignInActivity extends AppCompatActivity {
         } else {
             RequestQueue signinRequestQueue = Volley.newRequestQueue(this);
 
-            String url = "http://ineke.broeders.be/touristy/webservice.aspx?do=addUser&email=" + txtemail +"&username=" + txtusername + "&password=" + txtpassword + "&firstname=" + txtname + "&lastname=" + txtlastname +"&country=" + spnnationality.getSelectedItem().toString() + "&profilepictureURL=" + "&birthdate=" + birth_date;
-            StringRequest signinRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            String url = "http://ineke.broeders.be/touristy/webservice.aspx?do=addUser&email=" + email +"&username=" + username + "&password=" + password + "&firstname=" + name + "&lastname=" + lastname +"&country=" + nationality + "&profilepictureURL=" + "&birthdate=" + birth_date;
+            StringRequest signInRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.contains("true")) {
-                        txtError.setTextColor(getResources().getColor(R.color.colorSucces));
-                        txtError.setText(R.string.signin_Successful);
+                    if (response.contains("true") || response.length() == 0) {
+                        editor.putString("email",email);
+                        editor.putString("country",nationality);
+                        editor.putString("birthDate",birth_date);
+                        //dateCreated is ne moeilijke
+                        String dateCreated = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+                        editor.putString("dateCreated",dateCreated);
+                        //einde dateCreated
+                        editor.putString("firstName",name);
+                        editor.putString("lastName",lastname);
+                        editor.putString("password",password);
+                        editor.putString("profilePictureURL","");
+                        editor.putString("username",username);
+                        editor.apply();
+
+                        goToHome();
                     } else {
                         txtError.setText(R.string.signin_Error);
                     }
@@ -237,8 +250,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
             });
 
-            signinRequestQueue.add(signinRequest);
+            signinRequestQueue.add(signInRequest);
         }
-        */
     }
 }
