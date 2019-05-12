@@ -148,11 +148,12 @@ public class LogInActivity extends AppCompatActivity {
                         editor.putBoolean("isNew", false);
                         editor.putString("userID",userID);
                         editor.apply();
+
+                        goToHome();
                     } else {
                         txtError.setText(R.string.wrongCreds);
                     }
                     progressDialog.dismiss();
-                    goToHome();
                 }
             }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                 @Override

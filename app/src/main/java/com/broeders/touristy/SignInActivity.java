@@ -34,8 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.broeders.touristy.R;
-import com.broeders.touristy.models.User;
+
 
 public class SignInActivity extends AppCompatActivity {
     // UI Declarations
@@ -166,40 +165,54 @@ public class SignInActivity extends AppCompatActivity {
     protected boolean verifyData() {
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
+            txtError.setText(R.string.Name);
             progressDialog.dismiss();
             return false;
         }
         if (lastname.isEmpty()) {
+            txtError.setText(R.string.Last_name);
             Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if (email.isEmpty()) {
+            txtError.setText(R.string.Enter_your_email);
+            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+            return false;
+        }
+        if (username.isEmpty()) {
+            txtError.setText(R.string.Enter_your_username);
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if (password.isEmpty()) {
+            txtError.setText(R.string.Enter_your_password);
             Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if (passwordconfirm.isEmpty()) {
+            txtError.setText(R.string.Confirm_your_password);
             Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if (birth_date.isEmpty()) {
+            txtError.setText(R.string.Birth_Date);
             Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if(password.length() < 5  || passwordconfirm.length() < 5 ){
+            txtError.setText(R.string.Password_length);
             Toast.makeText(this, R.string.Password_length, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
         }
         if (!password.equals(passwordconfirm)) {
+            txtError.setText(R.string.Password_match);
             Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return false;
