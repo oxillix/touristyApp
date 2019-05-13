@@ -37,7 +37,7 @@ public class FirstUseActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         //animations end
 
-        Button loginButton = findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.Login);
         Button CreateAccountButton = findViewById(R.id.CreateAccount);
         pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
         editor = pref.edit();
