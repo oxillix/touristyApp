@@ -17,11 +17,7 @@ public class FirstUseActivity extends AppCompatActivity {
 
 
     private static final String TAG = "FirstUseActivity";
-    private  static final  String[] LOCATIONPERMISSION = {
-
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
+    private  static final  String[] LOCATIONPERMISSION = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private  static final  String[] INTERNETPERMISSION= {Manifest.permission.INTERNET};
     private  static final  String[] NETWORKPERMISSION= {Manifest.permission.ACCESS_NETWORK_STATE};
     private  static final  String[] STORAGEPERMISSION= { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -69,42 +65,51 @@ public class FirstUseActivity extends AppCompatActivity {
         int permissionFineLocation = ActivityCompat.checkSelfPermission(FirstUseActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
         int permissionCoarseLocation = ActivityCompat.checkSelfPermission(FirstUseActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if(permissionInternet != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(FirstUseActivity.this,
-                    INTERNETPERMISSION,
-                    1);
-
-        }
-        if(permissionNetwork != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(FirstUseActivity.this,
-                    NETWORKPERMISSION,
-                    1);
-
-        }
-        if(permissionReadStorage != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(FirstUseActivity.this,
-                    STORAGEPERMISSION,
-                    1);
-
-        }
-        if(permissionwriteStorage != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(FirstUseActivity.this,
-                    STORAGEPERMISSION,
-                    1);
-
-        }
         if(permissionFineLocation != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(FirstUseActivity.this,
                     LOCATIONPERMISSION,
-                    1);
+                    1
+            );
 
         }
         if(permissionCoarseLocation != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(FirstUseActivity.this,
                     LOCATIONPERMISSION,
-                    1);
+                    1
+            );
 
         }
+
+        if(permissionInternet != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstUseActivity.this,
+                    INTERNETPERMISSION,
+                    1
+            );
+
+        }
+        if(permissionNetwork != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstUseActivity.this,
+                    NETWORKPERMISSION,
+                    1
+            );
+
+        }
+        if(permissionReadStorage != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstUseActivity.this,
+                    STORAGEPERMISSION,
+                    1
+            );
+
+        }
+        if(permissionwriteStorage != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstUseActivity.this,
+                    STORAGEPERMISSION,
+                    1
+            );
+
+        }
+
     }
+
 
 }
