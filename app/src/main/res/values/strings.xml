@@ -245,4 +245,5 @@
     <string name="menu_send">Send</string>
     <string name="drawer_menu_home">Home</string>
     <string name="drawer_menu_profile">Profile</string>
+    <string name="to_get_started_please_login">To get started, please login</string>
 </resources>
