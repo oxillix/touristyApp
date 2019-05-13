@@ -246,4 +246,6 @@
     <string name="drawer_menu_home">Home</string>
     <string name="drawer_menu_profile">Profile</string>
     <string name="to_get_started_please_login">To get started, please login</string>
+    <string name="log_in_or_create_a_new_account">Log in or create a new account</string>
+    <string name="let_s_get_started">let\'s get started</string>
 </resources>

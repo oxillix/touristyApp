@@ -38,6 +38,7 @@ public class FirstUseActivity extends AppCompatActivity {
         //animations end
 
         Button loginButton = findViewById(R.id.loginButton);
+        Button CreateAccountButton = findViewById(R.id.CreateAccount);
         pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
         editor = pref.edit();
 
@@ -51,6 +52,15 @@ public class FirstUseActivity extends AppCompatActivity {
             {
                 Intent login = new Intent(getApplicationContext(), LogInActivity.class);
                 startActivity(login);
+                finish();
+            }
+        });
+        CreateAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent Signin = new Intent(getApplicationContext(), SignInActivity.class);
+                startActivity(Signin);
                 finish();
             }
         });
