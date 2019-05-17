@@ -6,21 +6,21 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/Login"
+        android:id="@+id/LoginButton"
         android:layout_width="313dp"
         android:layout_height="58dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="468dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@android:color/holo_orange_light"
+        android:text="@string/Log_In"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/Log_In" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/CreateAccount"
+        android:id="@+id/CreateAccountButton"
         android:layout_width="313dp"
         android:layout_height="58dp"
         android:layout_marginStart="8dp"
@@ -28,13 +28,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/holo_orange_light"
+        android:text="Create Account"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Login"
-        app:layout_constraintVertical_bias="0.03"
-        tools:text="Create Account" />
+        app:layout_constraintTop_toBottomOf="@+id/LoginButton"
+        app:layout_constraintVertical_bias="0.03" />
 
     <TextView
         android:id="@+id/textView2"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.319"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/textView"
