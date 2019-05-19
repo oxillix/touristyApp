@@ -244,8 +244,16 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="drawer_menu_home">Home</string>
-    <string name="drawer_menu_profile">Profile</string>
+    <string name="drawer_menu_profile">My Profile</string>
     <string name="to_get_started_please_login">To get started, please login</string>
     <string name="log_in_or_create_a_new_account">Log in or create a new account</string>
     <string name="let_s_get_started">let\'s get started</string>
+    <string name="drawer_menu_routes">Routes</string>
+    <string name="drawer_menu_my_routes">My Routes</string>
+    <string name="routes_no_title">No title</string>
+    <string name="routes_no_info">no info</string>
+    <string name="routeItem_no_user">no user</string>
+    <string name="routeItem_no_description">no description</string>
+    <string name="routes_fetching_error">An error occurred while fetching routes.</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -12,13 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
     SharedPreferences pref;
-    SharedPreferences.Editor editor;
 
 
     @Override
@@ -28,6 +26,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Home");
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -36,11 +35,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView navName =  headerView.findViewById(R.id.nameTxtDrawer);
 
         pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
-        editor = pref.edit();
 
         String user_Email =  pref.getString("email", "no email");
         String user_FirstName =  pref.getString("firstName", "no first name");
         String user_LastName =  pref.getString("lastName", "no last name");
+
         //TODO: get profile image from preferences with base64
         //String user_ProfilePicture = pref.getString("profile_picture","error");
 
@@ -54,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ProfileFragment()).commit();
+                    new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
@@ -64,11 +63,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                        new HomeFragment()).commit();
+                break;
+            case R.id.nav_routes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new RoutesFragment()).commit();
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
+                break;
+            case R.id.nav_my_routes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MyRouteFragment()).commit();
                 break;
         }
 

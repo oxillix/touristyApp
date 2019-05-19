@@ -16,4 +16,9 @@
 
     <color name="firstusebleubutton">#3498db</color>
     <color name="black">#2f3640</color>
+
+
+    <!---         Recyclerview           -->
+    <color name="horizontal_image_background">#F8E81C</color>
+    <color name="name_text_color">#333333</color>
 </resources>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="11dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="11dp">
+
+            <ImageView
+                android:id="@+id/full_image"
+                android:layout_width="match_parent"
+                android:layout_height="131dp"
+                android:src="@drawable/shadow_overlay"
+                android:gravity="bottom"
+                android:background="@color/horizontal_image_background"/>
+
+            <TextView
+                android:id="@+id/route_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/full_image"
+                android:textSize="25sp"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/name_text_color"
+                android:text="@string/routes_no_title"/>
+
+            <TextView
+                android:id="@+id/routeItem_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/route_title"
+                android:textSize="14sp"
+                android:textColor="@color/name_text_color"
+                android:text="@string/routeItem_no_description"/>
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/routeItem_description"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/no_profile_picture"
+                card_view:srcCompat="@drawable/no_profile_picture" />
+
+            <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/routeItem_description"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toRightOf="@id/profile_image"
+                android:text="@string/routeItem_no_user"
+                android:textColor="@color/name_text_color"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/text_view_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textSize="18sp"
+                android:layout_below="@+id/routeItem_description"
+                android:layout_toRightOf="@id/profile_name"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/routes_no_info"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

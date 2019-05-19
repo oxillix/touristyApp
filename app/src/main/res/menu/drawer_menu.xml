@@ -3,31 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
             android:title="@string/drawer_menu_home" />
         <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="@string/drawer_menu_profile" />
+            android:id="@+id/nav_routes"
+            android:icon="@drawable/ic_menu_route"
+            android:title="@string/drawer_menu_routes" />
     </group>
 
 
-    <!--
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
-    -->
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
 
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_profile"
+                android:title="@string/drawer_menu_profile" />
+        <item
+            android:id="@+id/nav_my_routes"
+            android:icon="@drawable/ic_menu_route"
+            android:title="@string/drawer_menu_my_routes" />
+    </group>
 </menu>
