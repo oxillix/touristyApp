@@ -49,7 +49,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
 
         addSlide(new SlideFragmentBuilder()
                 .backgroundColor(R.color.firstusebleubutton)
-                .buttonsColor(R.color.black)
+                .buttonsColor(R.color.firstUseBlack)
                 .image(R.drawable.monuments)
                 .title("let's spot some monuments!")
                 .description("Want to see all the monuments in your city? Or do you just want to go for a walk?" +
@@ -57,7 +57,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
                 .build());
         addSlide(new SlideFragmentBuilder()
                 .backgroundColor(R.color.firstusebleubutton)
-                .buttonsColor(R.color.black)
+                .buttonsColor(R.color.firstUseBlack)
                 .image(R.drawable.routes)
                 .title("Relaxing routes")
                 .description("Step around in the city or village " +
@@ -65,7 +65,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
                 .build());
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.firstusebleubutton)
-                        .buttonsColor(R.color.black)
+                        .buttonsColor(R.color.firstUseBlack)
 
                         .neededPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
                         .image(R.drawable.pointtopoint)
@@ -84,7 +84,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
 
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.firstusebleubutton)
-                        .buttonsColor(R.color.black)
+                        .buttonsColor(R.color.firstUseBlack)
                         .image(R.drawable.profile)
                         .title("Already have an account?")
                         .description("Sign in or continue and create a new account.")
