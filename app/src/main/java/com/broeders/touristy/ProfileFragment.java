@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +35,12 @@ public class ProfileFragment extends Fragment {
 
     Button btnLogOut;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Profile");
         final SharedPreferences preferences = this.getActivity().getSharedPreferences("pref",Context.MODE_PRIVATE);
 
         String user_username = preferences.getString("username","no username");
