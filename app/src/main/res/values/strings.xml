@@ -256,4 +256,6 @@
     <string name="routeItem_no_description">no description</string>
     <string name="routes_fetching_error">An error occurred while fetching routes.</string>
     <string name="retry">Retry</string>
+    <string name="Titel">Dit is de titel</string>
+    <string name="Beschrijving1">Dit is de eerste beschrijving</string>
 </resources>
