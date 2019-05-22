@@ -15,8 +15,17 @@
     <color name="colorError">#FF4444</color>
 
     <color name="firstusebleubutton">#3498db</color>
-    <color name="black">#2f3640</color>
+    <color name="firstUseBlack">#2f3640</color>
 
+
+    <color name="solidCircle">#80FFFFFF</color>
+    <color name="circleBorder">#50FFFFFF</color>
+    <color name="gradStart">#2196F3</color>
+    <color name="gradEnd">#156CAF</color>
+    <color name="country">#270A04</color>
+    <color name="profileBlack">#000000</color>
+    <color name="profileHeaders">#2196F3</color>
+    <color name="profileBackground">#98FB98</color>
 
     <!---         Recyclerview           -->
     <color name="horizontal_image_background">#F8E81C</color>
