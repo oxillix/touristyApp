@@ -50,7 +50,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Routes
 
         //set
         Picasso.get().load(imageUrl).fit().centerInside().into(holder.bigImageView);
-        if (profileImageUrl != ""){
+        if (!profileImageUrl.contentEquals("")){
             Picasso.get().load(profileImageUrl).fit().centerInside().transform(new CircleTransform()).into(holder.ProfileImageView);
         }
         holder.TextViewTitle.setText(routeTitle);

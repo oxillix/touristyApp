@@ -258,4 +258,7 @@
     <string name="retry">Retry</string>
     <string name="Titel">Dit is de titel</string>
     <string name="Beschrijving1">Dit is de eerste beschrijving</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="drawer_current_route">Current Route</string>
+    <string name="drawer_stop_route">Stop route</string>
 </resources>

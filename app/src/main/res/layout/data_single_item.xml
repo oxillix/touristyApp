@@ -53,6 +53,7 @@
                 android:textColor="@color/name_text_color"
                 android:text="@string/routeItem_no_description"/>
 
+
             <ImageView
                 android:id="@+id/profile_image"
                 android:layout_width="30dp"

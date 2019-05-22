@@ -48,6 +48,7 @@ public class RoutesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_routes, container, false);
         progressBar = rootView.findViewById(R.id.routes_progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Public Routes");
         //initialising
         mRecyclerView = rootView.findViewById(R.id.recycler_view);

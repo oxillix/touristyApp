@@ -4,6 +4,21 @@
     tools:showIn="navigation_view">
 
     <group
+        android:id="@+id/menu_topontop"
+        android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/drawer_current_route"
+            android:icon="@drawable/ic_menu_route"
+            android:title="@string/drawer_current_route" />
+        <item
+            android:id="@+id/drawer_stop_route"
+            android:icon="@drawable/ic_menu_route"
+            android:title="@string/drawer_stop_route" />
+    </group>
+
+    <group
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item

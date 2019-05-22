@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,9 +59,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    ProgressBar progressBar;
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.drawer_current_route:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new mapRouteFragment()).commit();
+                break;
+            case R.id.drawer_stop_route:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+                break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();

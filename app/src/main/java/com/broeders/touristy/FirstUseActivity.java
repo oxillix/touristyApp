@@ -75,7 +75,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showMessage("permissions already granted");
+                        showMessage("Permissions already granted");
 
                     }
                 }, "Grant Location permission"));
@@ -107,11 +107,6 @@ public class FirstUseActivity extends MaterialIntroActivity {
         Intent signin = new Intent(getApplicationContext(), SignInActivity.class);
         startActivity(signin);
         super.onFinish();
-        Toast.makeText(this, "Start by making an account!)", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Start by making an account!", Toast.LENGTH_SHORT).show();
     }
-
-
-
-
-
 }
