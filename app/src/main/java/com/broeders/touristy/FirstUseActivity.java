@@ -6,10 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.FloatRange;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
+import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.heinrichreimersoftware.materialintro.slide.Slide;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.MessageButtonBehaviour;
@@ -18,24 +26,15 @@ import agency.tango.materialintroscreen.animations.IViewTranslation;
 
 
 public class FirstUseActivity extends MaterialIntroActivity {
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+
     @Override
-    protected void onCreate( @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SharedPreferences pref;
+        SharedPreferences.Editor editor;
         super.onCreate(savedInstanceState);
 
-        //animations
-        //Hiding status bar
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //Hiding action bar
-        getSupportActionBar().hide();
-        //animations end
-
+        setContentView(R.layout.activity_first_use);
         Button loginButton = findViewById(R.id.btnLogIn);
-        pref = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
-        editor = pref.edit();
-
-        //initialiseer hier alle preferences
 
         enableLastSlideAlphaExitTransition(true);
 
@@ -75,7 +74,7 @@ public class FirstUseActivity extends MaterialIntroActivity {
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showMessage("Permissions already granted");
+                        showMessage("permissions already granted");
 
                     }
                 }, "Grant Location permission"));
@@ -92,21 +91,23 @@ public class FirstUseActivity extends MaterialIntroActivity {
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Intent login = new Intent(getApplicationContext(), LogInActivity.class);
                         startActivity(login);
                     }
                 }, "Sign in"));
-
-
-
-
     }
     @Override
     public void onFinish() {
         Intent signin = new Intent(getApplicationContext(), SignInActivity.class);
         startActivity(signin);
         super.onFinish();
-        Toast.makeText(this, "Start by making an account!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Start by making an account!)", Toast.LENGTH_SHORT).show();
     }
-}
+    }
+
+
+
+
+
+
+

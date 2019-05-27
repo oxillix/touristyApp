@@ -60,7 +60,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".FirstUseActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Intro"/>
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait"
