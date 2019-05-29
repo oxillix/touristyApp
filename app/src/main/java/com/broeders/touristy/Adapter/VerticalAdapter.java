@@ -100,6 +100,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Routes
             Toast.makeText(mContext, mRoutesList.get(clickedPosition).getRouteID(), Toast.LENGTH_LONG).show();
 
             editor.putString("currentRouteID", mRoutesList.get(clickedPosition).getRouteID());
+            editor.putString("currentRouteName", mRoutesList.get(clickedPosition).getRouteTitle());
             editor.putBoolean("isDoingRoute", true);
             editor.apply();
         }

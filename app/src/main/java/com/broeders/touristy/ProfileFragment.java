@@ -45,8 +45,8 @@ public class ProfileFragment extends Fragment {
 
         String user_username = preferences.getString("username","no username");
         String user_country = preferences.getString("country","no country");
-        String user_firstName = preferences.getString("firstName","");
-        String user_lastName = preferences.getString("lastName","");
+        String user_firstName = preferences.getString("firstName","no firstName");
+        String user_lastName = preferences.getString("lastName","no lastName");
         String user_email = preferences.getString("email","no mail");
         String user_birthDate = preferences.getString("birthDate","no birthDate");
 
