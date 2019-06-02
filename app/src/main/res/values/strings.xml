@@ -322,4 +322,6 @@
     <string name="description_canteen_intro2" translatable="false">Order and we\'ll deliver the menu right in front of your door.</string>
     <string name="description_canteen_intro3" translatable="false">Bookmark a menu you wanted to save and keep track of its status whether it\'s available or not.</string>
     <string name="label_button_cta_canteen_intro" translatable="false">Get started</string>
+    <string name="HomeFragmentText" translatable="false">Welcome to our app, Touristy is an app that allows users to create guided routes. Have some spots you want to share? Touristy makes that possible. Swipe right and let\'s start exploring your city.Please remind that this is the beta version and that we are planning to add more routes in the future.</string>
+
 </resources>
