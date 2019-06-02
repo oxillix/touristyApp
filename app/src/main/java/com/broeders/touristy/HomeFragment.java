@@ -31,10 +31,11 @@ public class HomeFragment extends Fragment {
         editor = pref.edit();
 
         textView1 = rootView.findViewById(R.id.textView_home_1);
-        textView2 = rootView.findViewById(R.id.textView_home_2);
 
-        textView1.setText(String.valueOf(pref.getBoolean("isDoingRoute", false)));
-        textView2.setText(pref.getString("currentRouteID", "niet geinit"));
+
+
+
+
         return rootView;
     }
 }
