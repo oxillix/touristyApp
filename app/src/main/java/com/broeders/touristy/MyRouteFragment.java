@@ -103,8 +103,10 @@ public class MyRouteFragment extends Fragment {
                             //info
                             String location = route.getString("Location");
                             String routeID = route.getString("RouteID");
+                            String routeLength = route.getString("length");
 
-                            mRoutesList.add(new RouteItem(imageURL, profileImageURL, routeTitle, userName, location, description, routeID));
+
+                            mRoutesList.add(new RouteItem(imageURL, profileImageURL, routeTitle, userName, location, description, routeID, routeLength));
                         }
 
                         mVerticalAdapter = new VerticalAdapter(getContext(), mRoutesList);

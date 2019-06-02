@@ -42,4 +42,15 @@
         android:textSize="30sp"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/routeInfoTextView"
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/radius"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
 </FrameLayout>

@@ -8,8 +8,9 @@ public class RouteItem {
     private String mLocation;
     private String mDescription;
     private String mRouteID;
+    private String mRouteLength;
 
-    public RouteItem(String imageUrl, String profileImageUrl, String routeTitle, String routeCreator, String location, String description, String routeID) {
+    public RouteItem(String imageUrl, String profileImageUrl, String routeTitle, String routeCreator, String location, String description, String routeID, String routeLength) {
         mImageUrl = imageUrl;
         mProfileImageUrl = profileImageUrl;
         mCreator = routeCreator;
@@ -17,6 +18,7 @@ public class RouteItem {
         mTitle = routeTitle;
         mDescription = description;
         mRouteID = routeID;
+        mRouteLength = routeLength;
     }
 
     public String getImageUrl() {
@@ -40,4 +42,8 @@ public class RouteItem {
     public String getRouteID() {
         return mRouteID;
     }
+    public String getRouteLength() {
+        return mRouteLength;
+    }
+
 }

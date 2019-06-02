@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Touristy</string>
-    <!--<string name="api_key" translatable="false">empty</string>-->
+    <string name="api_key" translatable="false">AIzaSyDZ9Er0pqUttTXEctSvoB7NwDrz9ptnK74</string>
     <string name="Enter_your_email">Enter your email</string>
     <string name="Enter_your_username">Enter your email</string>
     <string name="Enter_your_password">Enter your Password</string>
@@ -322,4 +322,5 @@
     <string name="description_canteen_intro2" translatable="false">Order and we\'ll deliver the menu right in front of your door.</string>
     <string name="description_canteen_intro3" translatable="false">Bookmark a menu you wanted to save and keep track of its status whether it\'s available or not.</string>
     <string name="label_button_cta_canteen_intro" translatable="false">Get started</string>
+    <string name="start_route">Start Route</string>
 </resources>

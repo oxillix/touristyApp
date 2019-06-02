@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:background="@color/colorSucces"
+    android:padding="5dp"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/txtclose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textColor="@color/white"
+        android:text="X"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:background="@drawable/circle_border"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="11dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="11dp">
+
+        <ImageView
+            android:id="@+id/point_full_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shadow_overlay"
+            android:gravity="bottom"
+            android:background="@color/horizontal_image_background"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/point_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/point_full_image"
+            android:textSize="25sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/name_text_color"
+            android:text="@string/routes_no_title"/>
+
+        <TextView
+            android:id="@+id/pointItem_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/point_title"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/routeItem_no_description"
+            android:textColor="@color/name_text_color"
+            android:textSize="14sp" />
+
+
+        <RatingBar
+            android:id="@+id/pointRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/pointItem_description"
+            style="?android:attr/ratingBarStyle"
+            android:numStars="5"
+            android:stepSize="1"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="0dp"/>
+    </RelativeLayout>
+</LinearLayout>
+</ScrollView>
