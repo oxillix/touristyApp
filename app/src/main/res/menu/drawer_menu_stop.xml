@@ -2,6 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/menu_topontop"
+        android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/drawer_stop_route"
+            android:icon="@drawable/ic_cancel_button"
+            android:title="@string/drawer_stop_route" />
+    </group>
+
     <group
         android:id="@+id/menu_top"
         android:checkableBehavior="single">

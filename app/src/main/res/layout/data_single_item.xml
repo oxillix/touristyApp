@@ -27,9 +27,10 @@
             <ImageView
                 android:id="@+id/full_image"
                 android:layout_width="match_parent"
-                android:layout_height="131dp"
+                android:layout_height="250dp"
                 android:src="@drawable/shadow_overlay"
                 android:gravity="bottom"
+                android:adjustViewBounds="true"
                 android:background="@color/horizontal_image_background"/>
 
             <TextView
@@ -97,7 +98,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_view_info"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/grad"
                 android:text="@string/start_route"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:visibility="gone" />
         </RelativeLayout>

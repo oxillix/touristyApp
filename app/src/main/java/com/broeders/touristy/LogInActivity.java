@@ -82,7 +82,7 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         //code uit te voeren wanneer de activity beeindigt word.
-
+        editor.commit();
         super.onDestroy();
     }
 
@@ -147,7 +147,7 @@ public class LogInActivity extends AppCompatActivity {
 
                         editor.putBoolean("isNew", false);
                         editor.putString("userID",userID);
-                        editor.apply();
+                        editor.commit();
 
                         goToHome();
                     } else {
@@ -197,7 +197,7 @@ public class LogInActivity extends AppCompatActivity {
                             editor.putString("password",Password);
                             editor.putString("profilePictureURL",ProfilePictureURL);
                             editor.putString("username",Username);
-                            editor.apply();
+                            editor.commit();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

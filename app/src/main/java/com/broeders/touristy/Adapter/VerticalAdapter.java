@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.broeders.touristy.HomeActivity;
 import com.broeders.touristy.HomeFragment;
 import com.broeders.touristy.RoutesFragment;
 import com.broeders.touristy.mapRouteFragment;
@@ -106,16 +107,22 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Routes
             startRouteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    try{
                     int clickedPosition = getAdapterPosition();
 
                     editor.putString("currentRouteID", mRoutesList.get(clickedPosition).getRouteID());
                     editor.putString("currentRouteName", mRoutesList.get(clickedPosition).getRouteTitle());
                     editor.putBoolean("isDoingRoute", true);
-                    editor.apply();
+                    editor.commit();
 
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                    Fragment myFragment = new HomeFragment();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+                    Fragment myFragment = new mapRouteFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).commit();
+                    }catch (Exception e){
+                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                        Fragment myFragment = new mapRouteFragment();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).commit();
+                    }
                 }
             });
         }

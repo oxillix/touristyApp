@@ -138,8 +138,6 @@ public class RoutesFragment extends Fragment {
             );
 
             mRequestQueue.add(jsonArrayRequest);
-
-            progressBar.setVisibility(View.GONE);
         } else {
             errorText.setText(getContext().getResources().getString(R.string.noNetwork));
 

@@ -6,5 +6,7 @@
         android:angle="45"
         android:startColor="@color/gradStart"
         android:endColor="@color/gradEnd"/>
-
+    <corners
+        android:radius="10dp"
+        />
 </shape>

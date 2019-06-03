@@ -137,12 +137,6 @@ public class SignInActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goToHome() {
-        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(home);
-        finish();
-    }
-
     public void signIn(){
         displayProgressDialog(R.string.Creating_Account, R.string.Please_Wait);
         setUserValues();
@@ -233,7 +227,7 @@ public class SignInActivity extends AppCompatActivity {
             StringRequest signInRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.contains("true") || response.length() == 0) {
+                    if (response.contains("true") || response.contains("True")) {
                         editor.putString("email",email);
                         editor.putString("country",nationality);
                         editor.putString("birthDate",birth_date);
@@ -248,7 +242,8 @@ public class SignInActivity extends AppCompatActivity {
                         editor.putString("profilePictureURL","");
                         editor.putString("username",username);
                         editor.putBoolean("isNew", false);
-                        editor.apply();
+                        editor.putString("userID",response.substring(0,response.indexOf(";")));
+                        editor.commit();
 
                         goToHome();
                     } else {
@@ -266,5 +261,10 @@ public class SignInActivity extends AppCompatActivity {
 
             signinRequestQueue.add(signInRequest);
         }
+    }
+    public void goToHome() {
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+        finish();
     }
 }

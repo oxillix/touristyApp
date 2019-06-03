@@ -1,5 +1,6 @@
 package com.broeders.touristy;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class MyRouteFragment extends Fragment {
@@ -73,12 +76,21 @@ public class MyRouteFragment extends Fragment {
 
         return rootView;
     }
+    SharedPreferences pref;
     private void parseJSON() {
         progressBar.setVisibility(View.VISIBLE);
         errorText.setVisibility(View.GONE);
         retryButton.setVisibility(View.GONE);
 
-        String url = "http://ineke.broeders.be/touristy/webservice.aspx?do=getRoutes";
+        pref = getContext().getSharedPreferences("pref", MODE_PRIVATE);
+        String userID = pref.getString("userID","error");
+        String url;
+        if (!userID.contentEquals("error")){
+            url = "http://ineke.broeders.be/touristy/Webservice.aspx?do=getRouteUser&userid=" + userID;
+        }else{
+            url = "http://ineke.broeders.be/touristy/Webservice.aspx?do=getRoutes";
+        }
+
 
         if (NetworkCheckingClass.isNetworkAvailable(getContext())) {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {

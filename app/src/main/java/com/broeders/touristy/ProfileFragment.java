@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.broeders.touristy.HelperClasses.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,12 +51,18 @@ public class ProfileFragment extends Fragment {
         String user_lastName = preferences.getString("lastName","no lastName");
         String user_email = preferences.getString("email","no mail");
         String user_birthDate = preferences.getString("birthDate","no birthDate");
+        String user_ProfilePicture = preferences.getString("profilePictureURL","error");
 
         TextView pfUsername = v.findViewById(R.id.usernameTextProfile);
         TextView pfCountry = v.findViewById(R.id.countryTextProfile);
         TextView pfName = v.findViewById(R.id.nameTxtProfile);
         TextView pfMail = v.findViewById(R.id.emailTxtProfile);
         TextView pfBirthDate = v.findViewById(R.id.birthDateTxtProfile);
+        ImageView pfPicture = v.findViewById(R.id.pfPicture);
+
+        if (!user_ProfilePicture.contentEquals("error")){
+            Picasso.get().load(user_ProfilePicture).fit().centerInside().transform(new CircleTransform()).into(pfPicture);
+        }
 
         pfUsername.setText(user_username);
         pfCountry.setText(user_country);

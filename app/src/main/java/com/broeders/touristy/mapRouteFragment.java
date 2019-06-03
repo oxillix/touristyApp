@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,8 +18,10 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -29,6 +32,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +44,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.broeders.touristy.HelperClasses.NetworkCheckingClass;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,7 +61,10 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -76,6 +84,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,17 +137,26 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
     public  Integer currentPoint;
 
     public PolylineOptions polyOptions;
-
+    Bitmap mBitmap;
 
     public Dialog myDialog;
 
+
+    public boolean popupInProgress;
+    public int distance;
+
+    public TextView distanceTextView;
+    LocationManager lm;
+    boolean gps_enabled;
+    boolean network_enabled;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ((HomeActivity) getActivity()).routeStarted();
         mapCreationFinished = false;
         routeIsDrawed = false;
         userStartedRoute = false;
+        popupInProgress = false;
         currentPoint = 0;
 
         pref = getContext().getSharedPreferences("pref", MODE_PRIVATE);
@@ -154,6 +172,11 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
         polyOptions = new PolylineOptions();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
+        //locationcheck
+        lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        gps_enabled = false;
+        network_enabled = false;
+        // end locationcheck
         parseJSON();
     }
 
@@ -163,10 +186,12 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
         //begin popup
         myDialog = new Dialog(getContext());
         //einde popup
+        distanceTextView = rootView.findViewById(R.id.distanceTextView);
         routeInfoTextView = rootView.findViewById(R.id.routeInfoTextView);
         routeInfoTextView.setVisibility(View.GONE);
         progressBar = rootView.findViewById(R.id.start_route_progressBar);
         errorText = rootView.findViewById(R.id.startRoute_error_textView);
+        errorText.setVisibility(View.GONE);
         retryButton = rootView.findViewById(R.id.button_retry_start_route);
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,10 +200,12 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
                 ft.detach(mapRouteFragment.this).attach(mapRouteFragment.this).commit();
             }
         });
+        retryButton.setVisibility(View.GONE);
         //
         //------------------------------------------------------------------------------------------
         //
         //start invulling van kaart
+        if (checkPlayServices() && NetworkCheckingClass.isNetworkAvailable(getContext()) && isLocationEnabled(getContext())) {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -190,46 +217,51 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
                     googleMap.setMyLocationEnabled(true);
                 } else {
                     errorText.setText("Please enable location permissions");
+                    retryButton.setVisibility(View.VISIBLE);
                 }
 
                 //getRouteToMarker(startLatLng);
 
                 mLocationRequest = new LocationRequest();
-                mLocationRequest.setInterval(1000);
-                mLocationRequest.setFastestInterval(1000);
+                mLocationRequest.setInterval(10000);
+                mLocationRequest.setFastestInterval(5000);
                 mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
                 checkLocationPermission();
                 mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
                 //fill in first marker of route
-                PointItem mPointItem = mPointsList.get(0);
-                String startCoordinaat = mPointsList.get(0).getCoordinaat();
-                Double startCoordinaatLat = Double.parseDouble(startCoordinaat.substring(0, startCoordinaat.indexOf(",")));
-                Double startCoordinaatLong = Double.parseDouble(startCoordinaat.substring(startCoordinaat.indexOf(",") + 1));
-                startLatLng = new LatLng(startCoordinaatLat,startCoordinaatLong);
+                if (mPointsList.size() > 0) {
+                    PointItem mPointItem = mPointsList.get(0);
+                    String startCoordinaat = mPointsList.get(0).getCoordinaat();
+                    Double startCoordinaatLat = Double.parseDouble(startCoordinaat.substring(0, startCoordinaat.indexOf(",")));
+                    Double startCoordinaatLong = Double.parseDouble(startCoordinaat.substring(startCoordinaat.indexOf(",") + 1));
+                    startLatLng = new LatLng(startCoordinaatLat, startCoordinaatLong);
 
-                googleMap.addMarker(new MarkerOptions()
-                                .position(startLatLng)
-                                .title(mPointItem.getPointNaam())
-                        //.icon(BitmapDescriptorFactory.fromBitmap(decodedBitmap))
-                        //.icon(bitmapDescriptorFromVector(getActivity(),R.drawable.spider))
-                        //.snippet("kkaas ofzo")
+                    googleMap.addMarker(new MarkerOptions()
+                                    .position(startLatLng)
+                                    .title(mPointItem.getPointNaam())
+                            //.icon(BitmapDescriptorFactory.fromBitmap(getImageBitmap()))
+                            //.icon(bitmapDescriptorFromVector(getActivity(),R.drawable.spider))
+                            //.snippet("kkaas ofzo")
 
 
-                ).showInfoWindow();
+                    ).showInfoWindow();
 
-                CameraPosition startPoint = CameraPosition.builder()
-                        .target(new LatLng(startCoordinaatLat, startCoordinaatLong))
-                        .zoom(15)
-                        .bearing(0)
-                        .tilt(0)
-                        .build();
+                    CameraPosition startPoint = CameraPosition.builder()
+                            .target(new LatLng(startCoordinaatLat, startCoordinaatLong))
+                            .zoom(15)
+                            .bearing(0)
+                            .tilt(0)
+                            .build();
 
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(startPoint), 10000, null);
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(startPoint), 10000, null);
 
-                mMap = googleMap;
-                routeInfoTextView.setText("Go to start point: " + mPointItem.getPointNaam());
+                    mMap = googleMap;
+                    routeInfoTextView.setText("Go to start point: " + mPointItem.getPointNaam());
+                } else {
+                    retryButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -238,12 +270,87 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
 
 
         mapCreationFinished = true;
+    } else{
+            errorText.setVisibility(View.VISIBLE);
+            retryButton.setVisibility(View.VISIBLE);
+        if (!NetworkCheckingClass.isNetworkAvailable(getContext())){
+            errorText.setText("This app requires internet.");
+        }
+        if (!isLocationEnabled(getContext())){
+                errorText.setText("This app requires location to be enabled.");
+        }
+        }
         return rootView;
     }
+    public Bitmap getImageBitmap(){
 
 
-    private void getMarkerToMarker(){
+        Picasso.get()
+                .load("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Jews_montage.jpg/266px-Jews_montage.jpg")
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        mBitmap = bitmap;
+                    }
 
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+        return mBitmap;
+    }
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
+
+    }
+
+    Dialog errorDialog;
+
+    private boolean checkPlayServices() {
+
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(getContext());
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+
+                if (errorDialog == null) {
+                    errorDialog = googleApiAvailability.getErrorDialog(getActivity(), resultCode, 2404);
+                    errorDialog.setCancelable(false);
+                }
+
+                if (!errorDialog.isShowing())
+                    errorDialog.show();
+
+            }
+        }
+
+        return resultCode == ConnectionResult.SUCCESS;
     }
 
     private void getRouteToMarker(LatLng pointLatLng) {
@@ -258,80 +365,89 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
     }
     LatLng latLng = null;
     Location mLocation = null;
-
+    Integer popupCounter = 1;
     LocationCallback mLocationCallback = new LocationCallback(){
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            for(Location location : locationResult.getLocations()){
-                if(getContext()!=null && mapCreationFinished &&  userStartedRoute){
-                    if(mLastLocation!=null && location != null){
-                        routeDistance += mLastLocation.distanceTo(location)/1000;
+            if (mMap != null) {
+                for (Location location : locationResult.getLocations()) {
+                    if (getContext() != null && mapCreationFinished && userStartedRoute) {
+                        if (mLastLocation != null && location != null) {
+                            routeDistance += mLastLocation.distanceTo(location) / 1000;
+                        }
+                        mLastLocation = location;
+                        if (routeIsDrawed && mLastLocation != null && currentPoint < mPointsList.size()) {
+                            PointItem mPointItem = mPointsList.get(currentPoint);
+                            String coordinaat = mPointsList.get(currentPoint).getCoordinaat();
+                            Double coordinaatLat = Double.parseDouble(coordinaat.substring(0, coordinaat.indexOf(",")));
+                            Double coordinaatLong = Double.parseDouble(coordinaat.substring(coordinaat.indexOf(",") + 1));
+                            latLng = new LatLng(coordinaatLat, coordinaatLong);
+
+                            getRouteToMarker(latLng);
+                            if (!popupInProgress && popupCounter == currentPoint) {
+                                popupCounter += 1;
+                                popupInProgress = true;
+                                ShowPopup(getView());
+                            }
+
+
+                            mLocation = new Location("");//provider name is unnecessary
+                            mLocation.setLatitude(latLng.latitude);
+                            mLocation.setLongitude(latLng.longitude);
+
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title(mPointItem.getPointNaam())).showInfoWindow();
+
+                            routeInfoTextView.setText("Go to point: " + mPointItem.getPointNaam());
+                        } else if (currentPoint == mPointsList.size()) {
+                            routeInfoTextView.setText("The route has finished!\nRetry or pick another route");
+                            routeInfoTextView.setTextColor(getResources().getColor(R.color.colorSucces));
+                            retryButton.setVisibility(View.VISIBLE);
+                        }
+                        if (latLng != null && mLocation != null && currentPoint < mPointsList.size()) {
+                            float radius = (float) 50.0;
+                            float distance = location.distanceTo(mLocation);
+                            if (distance < radius) {
+                                currentPoint += 1;
+                            }
+                        }
                     }
-                    mLastLocation = location;
-                    if(routeIsDrawed && mLastLocation !=null && currentPoint <= mPointsList.size()){
-                        PointItem mPointItem = mPointsList.get(currentPoint);
-                        String coordinaat = mPointsList.get(currentPoint).getCoordinaat();
-                        Double coordinaatLat = Double.parseDouble(coordinaat.substring(0, coordinaat.indexOf(",")));
-                        Double coordinaatLong = Double.parseDouble(coordinaat.substring(coordinaat.indexOf(",") + 1));
-                        latLng = new LatLng(coordinaatLat,coordinaatLong);
+                    if (getContext() != null && mapCreationFinished && !userStartedRoute) {
 
-                        getRouteToMarker(latLng);
-                        ShowPopup(getView());
+                        if (mLastLocation != null && location != null) {
+                            routeDistance += mLastLocation.distanceTo(location) / 1000;
+                        }
+                        mLastLocation = location;
 
-                        mLocation = new Location("");//provider name is unnecessary
-                        mLocation.setLatitude(latLng.latitude);
-                        mLocation.setLongitude(latLng.longitude);
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        mMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .title(mPointItem.getPointNaam())).showInfoWindow();
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
 
-                        routeInfoTextView.setText("Go to point: " + mPointItem.getPointNaam());
-                    } else if (currentPoint == mPointsList.size()) {
-                        routeInfoTextView.setText("De route is uit!");
-                    }
-                    if (latLng != null && mLocation != null){
+                        //check if user is close to starting point
+                        Location targetLocation = new Location("");//provider name is unnecessary
+                        targetLocation.setLatitude(startLatLng.latitude);
+                        targetLocation.setLongitude(startLatLng.longitude);
+
                         float radius = (float) 50.0;
-                        float distance = location.distanceTo(mLocation);
-                        if (distance < radius) {
+                        float distance = location.distanceTo(targetLocation);
+                        if (distance < radius && !userStartedRoute) {
+                            if (currentPoint == 0) {
+                                erasePolylines();
+                            }
+                            userStartedRoute = true;
                             currentPoint += 1;
                         }
-                    }
-                }
-                if(getContext()!=null && mapCreationFinished &&  !userStartedRoute){
 
-                    if(mLastLocation!=null && location != null){
-                        routeDistance += mLastLocation.distanceTo(location)/1000;
-                    }
-                    mLastLocation = location;
-
-                    LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
-
-                    //check if user is close to starting point
-                    Location targetLocation = new Location("");//provider name is unnecessary
-                    targetLocation.setLatitude(startLatLng.latitude);
-                    targetLocation.setLongitude(startLatLng.longitude);
-
-                    float radius = (float) 50.0;
-                    float distance = location.distanceTo(targetLocation);
-                    if (distance < radius && !userStartedRoute) {
-                        if (currentPoint == 0) {
-                            erasePolylines();
+                        distanceTextView.setText((int)distance + " meter");
+                        if (!routeIsDrawed && mLastLocation != null) {
+                            getRouteToMarker(startLatLng);
+                            routeIsDrawed = true;
                         }
-                    userStartedRoute = true;
-                    currentPoint += 1;
-                    }
-
-                    Toast.makeText(getContext(), String.valueOf(distance),Toast.LENGTH_SHORT).show();
-                    if(!routeIsDrawed && mLastLocation !=null){
-                        getRouteToMarker(startLatLng);
-                        routeIsDrawed = true;
                     }
                 }
-            }
+            } else{routeInfoTextView.setText("An unknown error ocurred \n Try again");}
         }
     };
 
@@ -381,25 +497,27 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
         TextView pointTitle;
         TextView pointItemDescription;
         RatingBar pointRatingBar;
+        PointItem mPointitem;
 
         txtclose = myDialog.findViewById(R.id.txtclose);
         pointFullImage = myDialog.findViewById(R.id.point_full_image);
         pointTitle = myDialog.findViewById(R.id.point_title);
         pointItemDescription = myDialog.findViewById(R.id.pointItem_description);
         pointRatingBar = myDialog.findViewById(R.id.pointRatingBar);
-
+        mPointitem = mPointsList.get(currentPoint-1);
         //pointFullImage
-        pointTitle.setText(mPointsList.get(currentPoint).getPointNaam());
-        pointItemDescription.setText(mPointsList.get(currentPoint).getDescription());
-        String imageUrl = mPointsList.get(currentPoint).getPictureUrl();
+        pointTitle.setText(mPointitem.getPointNaam());
+        pointItemDescription.setText(mPointitem.getDescription());
+        String imageUrl = mPointitem.getPictureUrl();
         if (!imageUrl.contentEquals("")) {
-            Picasso.get().load(imageUrl).fit().centerInside().into(pointFullImage);
+            Picasso.get().load(imageUrl).into(pointFullImage);
         }
 
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myDialog.dismiss();
+                popupInProgress = false;
             }
         });
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -494,7 +612,7 @@ public class mapRouteFragment extends Fragment implements com.google.android.gms
             Polyline polyline = mMap.addPolyline(polyOptions);
             polylines.add(polyline);
 
-            Toast.makeText(getContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+            distance = route.get(i).getDistanceValue();
         }
     }
 
