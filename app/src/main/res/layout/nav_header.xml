@@ -12,6 +12,7 @@
     <ImageView
         android:id="@+id/navProfileImage"
         android:layout_width="300dp"
+        android:paddingTop="20dp"
         android:layout_height="100dp"
         android:src="@drawable/no_profile_picture" />
 

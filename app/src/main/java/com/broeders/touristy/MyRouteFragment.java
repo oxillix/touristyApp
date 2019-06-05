@@ -44,7 +44,7 @@ public class MyRouteFragment extends Fragment {
     private TextView errorText;
     private Button retryButton;
     ProgressBar progressBar;
-
+    TextView myRouteInfoTextView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MyRouteFragment extends Fragment {
         mRecyclerView = rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        myRouteInfoTextView.setVisibility(View.GONE);
         mRoutesList = new ArrayList<>();
 
         mRequestQueue = Volley.newRequestQueue(getContext());
@@ -70,9 +70,15 @@ public class MyRouteFragment extends Fragment {
                 parseJSON();
             }
         });
+        myRouteInfoTextView = rootView.findViewById(R.id.myRouteInfoTextView);
         //end initialising
 
         parseJSON();
+        if (mRoutesList.size() == 0) {
+            myRouteInfoTextView.setVisibility(View.VISIBLE);
+            myRouteInfoTextView.setTextColor(getResources().getColor(R.color.colorError));
+            myRouteInfoTextView.setText("User doesn't have any routes");
+        }
 
         return rootView;
     }
@@ -148,8 +154,6 @@ public class MyRouteFragment extends Fragment {
             );
 
             mRequestQueue.add(jsonArrayRequest);
-
-            progressBar.setVisibility(View.GONE);
         } else {
             errorText.setText(getContext().getResources().getString(R.string.noNetwork));
 

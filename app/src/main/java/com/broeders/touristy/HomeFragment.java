@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
         pref = getContext().getSharedPreferences("pref", MODE_PRIVATE);
         editor = pref.edit();
 
-        textView1 = rootView.findViewById(R.id.textView_home_1);
+        //textView1 = rootView.findViewById(R.id.textView_home_1);
 
 
 

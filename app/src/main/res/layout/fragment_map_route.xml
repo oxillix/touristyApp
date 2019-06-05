@@ -63,5 +63,4 @@
         android:textSize="15sp"
         android:textColor="@color/profileBlack"
         android:text="distance to point" />
-
 </FrameLayout>

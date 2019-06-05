@@ -227,7 +227,7 @@ public class SignInActivity extends AppCompatActivity {
             StringRequest signInRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.contains("true") || response.contains("True")) {
+                    if (response.contains("true") || response.contains("True") || response.length() == 0) {
                         editor.putString("email",email);
                         editor.putString("country",nationality);
                         editor.putString("birthDate",birth_date);
@@ -242,8 +242,8 @@ public class SignInActivity extends AppCompatActivity {
                         editor.putString("profilePictureURL","");
                         editor.putString("username",username);
                         editor.putBoolean("isNew", false);
-                        editor.putString("userID",response.substring(0,response.indexOf(";")));
                         editor.commit();
+
 
                         goToHome();
                     } else {

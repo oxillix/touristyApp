@@ -40,4 +40,18 @@
         android:text="@string/retry"
         android:textSize="30sp"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/myRouteInfoTextView"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/radius"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:visibility="gone" />
 </RelativeLayout>
